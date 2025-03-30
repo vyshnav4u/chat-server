@@ -16,8 +16,8 @@ const server = http.createServer(app);
 initSocket(server);
 // readMessages();
 
-// server.listen(8000, () => {
-// 	console.log('Server started...');
-// });
+server.listen(8000, () => {
+	console.log('Server started...');
+});
 
 module.exports = app;
