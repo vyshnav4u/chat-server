@@ -1,31 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 
-// Example usage:
-const newMessage = {
-	messageId: 'unique-message-id-789',
-	senderId: 'user-id-101',
-	groupId: 'group-id-abc',
-	timestamp: '2023-10-27T10:05:00Z',
-	content: 'Meeting starting in 5 minutes!',
-	type: 'text',
-};
-
-// saveMessage(newMessage);
-
 const readMessages = () => {
 	try {
 		const filePath = path.join(
 			__dirname,
 			'..',
 			'..',
-			'src',
+			'api',
 			'db',
 			'messages.json'
 		);
-		console.log('filePath', filePath);
 		const data = fs.readFileSync(filePath, 'utf8');
-		const messageData = JSON.parse(messageData);
+		console.log('data', data);
+
+		const messageData = JSON.parse(data);
 
 		return messageData;
 	} catch (error) {
@@ -34,4 +23,25 @@ const readMessages = () => {
 	}
 };
 
-module.exports = { readMessages };
+const writeMessage = (key, data) => {
+	try {
+		const allMessages = readMessages();
+		const filePath = path.join(
+			__dirname,
+			'..',
+			'..',
+			'api',
+			'db',
+			'messages.json'
+		);
+		const currentData = allMessages[key] ?? [];
+		currentData.push(data);
+		allMessages[key] = currentData;
+
+		fs.writeFileSync(filePath, JSON.stringify(allMessages, null, 2), 'utf8');
+	} catch (error) {
+		console.error('Error writing file:', error);
+	}
+};
+
+module.exports = { readMessages, writeMessage };

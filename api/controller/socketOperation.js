@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const { writeMessage } = require('../model/messages.model');
 
 const initSocket = (server) => {
 	const CLIENT_URI = 'http://localhost:5173';
@@ -20,8 +21,9 @@ const initSocket = (server) => {
 		});
 
 		socket.on('sent_message', async (messageData) => {
-			messageData.time = String(new Date());
+			const { roomId } = messageData;
 			await socket.to(messageData.roomId).emit('receive_message', messageData);
+			writeMessage(roomId, messageData);
 		});
 
 		socket.on('disconnect', () => {
