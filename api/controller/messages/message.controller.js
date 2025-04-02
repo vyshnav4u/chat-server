@@ -1,13 +1,34 @@
 const { readMessages } = require('../../model/messages.model');
 
-//todo: add limit and skip
 const getMessages = (req, res) => {
-	const { params } = req;
+	console.clear();
+	const { params, query } = req;
 	const { roomId } = params;
-	console.log('params', params);
+	const { limit = 20, skip = 0 } = query;
 
 	const messages = readMessages();
-	res.status(200).json({ messages: messages?.[roomId] ?? [] });
+	const currentMessages = messages?.[roomId] ?? [];
+	const maxMessage = currentMessages.length;
+	const total = currentMessages.length;
+	const endIndex = total - skip;
+	const startIndex = Math.max(0, endIndex - limit);
+
+	if (skip >= maxMessage)
+		return res.status(200).json({
+			messages: [],
+			total,
+			skip: total,
+			limit: 0,
+		});
+
+	const responseMessage = currentMessages.slice(startIndex, endIndex);
+
+	res.status(200).json({
+		messages: responseMessage,
+		total,
+		skip: Number(skip),
+		limit: Number(limit),
+	});
 };
 
 module.exports = { getMessages };

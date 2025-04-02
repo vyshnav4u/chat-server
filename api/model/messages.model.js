@@ -12,8 +12,6 @@ const readMessages = () => {
 			'messages.json'
 		);
 		const data = fs.readFileSync(filePath, 'utf8');
-		console.log('data', data);
-
 		const messageData = JSON.parse(data);
 
 		return messageData;
