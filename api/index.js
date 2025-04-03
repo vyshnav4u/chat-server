@@ -3,9 +3,10 @@ const http = require('http');
 const cors = require('cors');
 const { initSocket } = require('./controller/socketOperation');
 const messageRoute = require('./routes/message.route');
+const { CLIENT_URI } = require('./constants/clientInfo');
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: CLIENT_URI }));
 app.use(express.json());
 
 app.use('/api/v1/messages', messageRoute);

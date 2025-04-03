@@ -1,8 +1,8 @@
 const { Server } = require('socket.io');
 const { writeMessage } = require('../model/messages.model');
+const { CLIENT_URI } = require('../constants/clientInfo');
 
 const initSocket = (server) => {
-	const CLIENT_URI = process.env.CLIENT_URI;
 	const io = new Server(server, {
 		cors: {
 			origin: CLIENT_URI,
