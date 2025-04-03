@@ -9,7 +9,7 @@ const app = express();
 app.use(
 	cors({
 		origin: 'https://chat-client-lemon.vercel.app',
-		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		methods: ['GET', 'POST'],
 	})
 );
 app.use(express.json());
