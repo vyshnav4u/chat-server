@@ -8,7 +8,7 @@ const { CLIENT_URI } = require('./constants/clientInfo');
 const app = express();
 app.use(
 	cors({
-		origin: 'https://chat-client-lemon.vercel.app/',
+		origin: 'https://chat-client-lemon.vercel.app',
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	})
 );
