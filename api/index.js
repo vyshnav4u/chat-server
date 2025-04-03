@@ -6,12 +6,12 @@ const messageRoute = require('./routes/message.route');
 const { CLIENT_URI } = require('./constants/clientInfo');
 
 const app = express();
-app.use(
-	cors({
-		origin: CLIENT_URI,
-		methods: ['GET', 'POST', 'OPTIONS'],
-	})
-);
+// app.use(
+// 	cors({
+// 		origin: CLIENT_URI,
+// 		methods: ['GET', 'POST', 'OPTIONS'],
+// 	})
+// );
 app.use(express.json());
 
 app.use('/api/v1/messages', messageRoute);
