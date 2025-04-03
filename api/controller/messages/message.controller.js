@@ -1,7 +1,6 @@
 const { readMessages } = require('../../model/messages.model');
 
 const getMessages = (req, res) => {
-	console.clear();
 	const { params, query } = req;
 	const { roomId } = params;
 	const { limit = 20, skip = 0 } = query;
