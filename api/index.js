@@ -14,7 +14,16 @@ app.use(
 );
 app.use(express.json());
 
-app.use('api/v1/messages', messageRoute);
+// Explicitly handle OPTIONS requests
+app.options('*', (req, res) => {
+	res.setHeader('Access-Control-Allow-Origin', CLIENT_URI);
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Add any headers you might be using
+	res.setHeader('Access-Control-Allow-Credentials', 'true'); // If needed
+	res.status(204).end();
+});
+
+app.use('/api/v1/messages', messageRoute);
 
 const server = http.createServer(app);
 initSocket(server);
