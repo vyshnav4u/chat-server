@@ -3,25 +3,24 @@ const http = require('http');
 const cors = require('cors');
 const { initSocket } = require('./controller/socketOperation');
 const messageRoute = require('./routes/message.route');
-const { CLIENT_URI } = require('./constants/clientInfo');
+const { WHITE_LIST } = require('./constants/clientInfo');
 
 const app = express();
 app.use(
 	cors({
-		origin: CLIENT_URI,
+		origin: function (origin, callback) {
+			console.log('origin', origin);
+
+			if (!origin || WHITE_LIST``.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
 		methods: ['GET', 'POST', 'OPTIONS'],
 	})
 );
 app.use(express.json());
-
-// Explicitly handle OPTIONS requests
-app.options('*', (req, res) => {
-	res.setHeader('Access-Control-Allow-Origin', CLIENT_URI);
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Add any headers you might be using
-	res.setHeader('Access-Control-Allow-Credentials', 'true'); // If needed
-	res.status(204).end();
-});
 
 app.use('/api/v1/messages', messageRoute);
 

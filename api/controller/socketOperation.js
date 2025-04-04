@@ -1,11 +1,19 @@
 const { Server } = require('socket.io');
 const { writeMessage } = require('../model/messages.model');
-const { CLIENT_URI } = require('../constants/clientInfo');
+const { WHITE_LIST } = require('../constants/clientInfo');
 
 const initSocket = (server) => {
 	const io = new Server(server, {
 		cors: {
-			origin: CLIENT_URI,
+			origin: (origin, callback) => {
+				console.log('origin', origin);
+
+				if (!origin || WHITE_LIST.includes(origin)) {
+					callback(null, true);
+				} else {
+					callback(new Error('Not allowed by CORS'));
+				}
+			},
 			methods: ['GET', 'POST'],
 		},
 	});
