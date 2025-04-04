@@ -8,7 +8,13 @@ const { WHITE_LIST } = require('./constants/clientInfo');
 const app = express();
 app.use(
 	cors({
-		origin: '*',
+		origin: function (origin, callback) {
+			if (!origin || WHITE_LIST.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
 		methods: ['GET', 'POST', 'OPTIONS'],
 	})
 );
